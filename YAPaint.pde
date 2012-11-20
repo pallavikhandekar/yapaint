@@ -3,19 +3,21 @@ final static int RECTANGLE=2;
 final static int TRIANGLE=3;
 final static int ELLIPSES=4;
 final static int STARS=5;
+final static int POLYGON=6;
 
-int drawShape=STARS;
+int drawShape=POLYGON;
 
-//Rectangle Drawing
 float [] p1x = new float[0]; // hold the mouse pressed marks
 float [] p1y = new float[0];
 float [] p2x = new float[0]; // hold the mouse pressed marks
 float [] p2y = new float[0];
 
 int count=0;
-
+int countPolygon=0;
 int pX1,pX2;
 int pY1,pY2;
+float startReference=0;//start reference for polygon
+
 void setup()
 {
   size(700,400);
@@ -32,14 +34,30 @@ void draw()
    if(mousePressed)
    {
     switch(drawShape){
-    case LINE:line(pmouseX,pmouseY,mouseX,mouseY);break;
+    case LINE:background(50);drawLine();break;
     case RECTANGLE: background(50);drawRectangle(); break;
     case TRIANGLE: background(50);drawTriangle(); break;
     case ELLIPSES: background(50);drawEllipse(); break;
     case STARS: background(50);drawStar(); break;
+    case POLYGON: background(50);drawPolygon();break;
     }
    }
 }
+
+void drawLine()
+{
+    for (int i=0; i<count; i++) { 
+      beginShape();
+      line(p1x[i],p1y[i],p2x[i],p2y[i]);
+      endShape();    
+    }
+    
+    if (mousePressed && mouseButton == LEFT) {
+        line(pX1, pY1, pX2,pY2);
+    } 
+}
+
+
 void drawRectangle() {
  
   float sizex = pX2 - pX1;
@@ -75,6 +93,11 @@ void drawEllipse()
 { 
   float sizex = pX2 - pX1;
   float sizey = pY2 - pY1;
+  
+   for(int i=0;i<count;i++)
+   {
+    ellipse(p1x[i],p1y[i],p2x[i],p2y[i]);
+   } 
   if (mousePressed && mouseButton == LEFT) {
     ellipseMode(CORNER);
     ellipse(pX1, pY1, sizex,sizey);
@@ -85,8 +108,7 @@ void drawStar()
 {
    
   float yA,yB,yC,xA,xB,xC,xD,xE,xF;
- // pushMatrix(); 
- // translate(pX1,pY1); 
+    println("start");
   for (int i=0; i<count; i++) { 
   beginShape();
   yA=p1y[i]+((p2y[i]-p1y[i])/4);
@@ -112,29 +134,60 @@ void drawStar()
   vertex(xD,yA);//12
   endShape(CLOSE);
   }
-// popMatrix();
+ 
 }
 
+void drawPolygon()
+{
+    for (int i=0; i<count; i++) { 
+      beginShape();
+      line(p1x[i],p1y[i],p2x[i],p2y[i]);
+      endShape();    
+    }
+    if (mousePressed && mouseButton == LEFT && startReference !=1000) {
+        line(pX1, pY1, pX2,pY2);
+    } 
+    
+}
 
 void mousePressed() {
- p1x= append(p1x, mouseX);
- p1y= append(p1y, mouseY);
-  pX1 = mouseX;
-  pY1 = mouseY;
-  mouseDragged(); // Reset vars
-   
+  if( drawShape == POLYGON && count>0 && startReference !=1000)
+  {
+    p1x= append(p1x,p2x[count-1]);
+    p1y= append(p1y,p2y[count-1]);
+    pX1 = pX2;
+    pY1 = pY2;
+  }
+  else
+  {
+    p1x= append(p1x, mouseX);
+    p1y= append(p1y, mouseY);
+    pX1 = mouseX;
+    pY1 = mouseY;
+    mouseDragged(); // Reset vars
+    startReference = mouseX; 
+  } 
+     //println("MPressed");
 }
  
 void mouseReleased() {
-p2x= append(p2x, mouseX);
-p2y= append(p2y, mouseY);
-  pX2 = mouseX;
-  pY2 = mouseY;
-count++;
+  if (drawShape == POLYGON && count>0 && p2x[count-1]== startReference)
+  {
+    startReference = 1000;
+  }
+  {
+    p2x= append(p2x, mouseX);
+    p2y= append(p2y, mouseY);
+    pX2 = mouseX;
+    pY2 = mouseY;
+    count++;
+  }
+//println("MReleased");
 }
  
 void mouseDragged() {
   pX2 = mouseX;
   pY2 = mouseY;
+ // println("MDrag");
 }
 
