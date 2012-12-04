@@ -5,7 +5,7 @@ final static int ELLIPSES=4;
 final static int STARS=5;
 final static int POLYGON=6;
 
-int drawShape=POLYGON;
+int drawShape=ELLIPSES;
 
 float [] p1x = new float[0]; // hold the mouse pressed marks
 float [] p1y = new float[0];
@@ -91,13 +91,17 @@ void drawTriangle(){
   
 void drawEllipse()
 { 
-  float sizex = pX2 - pX1;
-  float sizey = pY2 - pY1;
-  
+  float sizex;
+  float sizey;
    for(int i=0;i<count;i++)
    {
-    ellipse(p1x[i],p1y[i],p2x[i],p2y[i]);
+    ellipseMode(CORNER);
+    sizex=p2x[i]-p1x[i];
+    sizey=p2y[i]-p1y[i];
+    ellipse(p1x[i],p1y[i],sizex,sizey);
    } 
+   sizex = pX2 - pX1;
+   sizey = pY2 - pY1;
   if (mousePressed && mouseButton == LEFT) {
     ellipseMode(CORNER);
     ellipse(pX1, pY1, sizex,sizey);
