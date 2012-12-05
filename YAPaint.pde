@@ -5,7 +5,7 @@ final static int ELLIPSES=4;
 final static int STARS=5;
 final static int POLYGON=6;
 
-int drawShape=ELLIPSES;
+int drawShape=POLYGON;
 
 float [] p1x = new float[0]; // hold the mouse pressed marks
 float [] p1y = new float[0];
@@ -112,7 +112,7 @@ void drawStar()
 {
    
   float yA,yB,yC,xA,xB,xC,xD,xE,xF;
-    println("start");
+  //  println("start");
   for (int i=0; i<count; i++) { 
   beginShape();
   yA=p1y[i]+((p2y[i]-p1y[i])/4);
@@ -138,7 +138,31 @@ void drawStar()
   vertex(xD,yA);//12
   endShape(CLOSE);
   }
- 
+ if (mousePressed && mouseButton == LEFT) {
+      beginShape();
+      yA=pY1+((pY2-pY1)/4);
+      yB=pY1+(3*(pY2-pY1)/4);
+      yC=pY1+((pY2-pY1)/2);
+      xA=pX1 +((pX2-pX1)/2);
+      xB=(pX2-pX1)/4;
+      xC=pX2-xB; 
+      xD=pX1+xB;
+      xE=pX2-((pX2-xC)/2);
+      xF=pX1+((xD-pX1)/2);
+      vertex(xA,pY1);//1
+      vertex(xC,yA);//2
+      vertex(pX2,yA);//3
+      vertex(xE,yC);//4
+      vertex(pX2,yB);//5
+      vertex(xC,yB);//6
+      vertex(xA,pY2);//7
+      vertex(xD,yB);//8
+      vertex(pX1,yB);//9
+      vertex(xF,yC);//10
+      vertex(pX1,yA);//11
+      vertex(xD,yA);//12
+      endShape(CLOSE);
+  } 
 }
 
 void drawPolygon()
