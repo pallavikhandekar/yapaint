@@ -5,7 +5,7 @@ final static int ELLIPSES=4;
 final static int STARS=5;
 final static int POLYGON=6;
 
-int drawShape=POLYGON;
+int drawShape=STARS;
 
 float [] p1x = new float[0]; // hold the mouse pressed marks
 float [] p1y = new float[0];
