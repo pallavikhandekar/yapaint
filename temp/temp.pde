@@ -6,17 +6,17 @@ int ST1;
 int ST2;
 int ST3;
 int SW = 1;
-final static int LINE = 1;
-final static int RECTANGLE=2;
-final static int TRIANGLE=3;
-final static int ELLIPSES=4;
-final static int STARS=5;
-final static int POLYGON=6;
-final static int PEN=7;
-final static int ERASE=8;
+final static int PEN=1;
+final static int LINE = 2;
+final static int RECTANGLE=3;
+final static int TRIANGLE=4;
+final static int ELLIPSES=5;
+final static int STARS=6;
+final static int POLYGON=7;
+final static int ERASE=10;
 
 
-int drawShape=STARS;
+int drawShape;
 int [] pre_pixels;
 
 float [] p1x = new float[0]; // hold the mouse pressed marks
@@ -47,11 +47,8 @@ void draw() {
       background(255);
   }
     if(eraserMode == false) {
-    if(shapesMode)
-    {  
-
-      drawEllipse();
-    }
+   drawShapes();
+   freeDraw();
   }
   eraserTool();
   eraserSetup();
@@ -64,7 +61,7 @@ void draw() {
   clearSet();
   ellipseButton();
   ellipseButtonClicked();
-  
+ 
 }
 
 void ellipseButton(){
@@ -167,6 +164,8 @@ void clearSet() {
   }
 }
 void freeDraw() {
+  
+      
   if(mousePressed) {
       stroke(ST1,ST2,ST3);
       strokeWeight(SW);
@@ -422,6 +421,7 @@ void mouseReleased() {
 }
  
 void mouseDragged() {
+  
   pX2 = mouseX;
   pY2 = mouseY;
   dragging = true;
